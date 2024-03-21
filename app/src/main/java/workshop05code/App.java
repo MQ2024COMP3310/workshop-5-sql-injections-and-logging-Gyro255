@@ -38,13 +38,13 @@ public class App {
 
         wordleDatabaseConnection.createNewDatabase("words.db");
         if (wordleDatabaseConnection.checkIfConnectionDefined()) {
-            System.out.println("Wordle created and connected.");
+            logger.log(Level.INFO, "Wordle created and connected.");
         } else {
             System.out.println("Not able to connect. Sorry!");
             return;
         }
         if (wordleDatabaseConnection.createWordleTables()) {
-            System.out.println("Wordle structures in place.");
+            logger.log(Level.INFO, "Wordle structures in place.");
         } else {
             System.out.println("Not able to launch. Sorry!");
             return;
@@ -58,19 +58,19 @@ public class App {
             while ((line = br.readLine()) != null) {
                 
                 if (checkInput(line)) {
-                    System.out.println("Valid 4-letter word: " + line);
+                    logger.log(Level.INFO, "Valid 4-letter word: " + line);
                     wordleDatabaseConnection.addValidWord(i, line);
                     i++;
                 }
                 else {
-                    System.out.println("Invalid word: " + line);
+                    logger.log(Level.SEVERE, "Ignored invalid word: " + line);
                 }
                 
             }
 
         } catch (IOException e) {
             System.out.println("Not able to load . Sorry!");
-            System.out.println(e.getMessage());
+            logger.log(Level.SEVERE, "Can't read from word list.", e);
             return;
         }
 
@@ -87,6 +87,7 @@ public class App {
                 }
                 if (!checkInput(guess)) {
                     System.out.println("Input must be 4-letter lowercase word.");
+                    logger.log(Level.WARNING, "Invalid guess: " + guess);
                     continue;
                 }
 
@@ -102,7 +103,7 @@ public class App {
                 
             }
         } catch (NoSuchElementException | IllegalStateException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error when the game is running.", e);
         }
 
     }
