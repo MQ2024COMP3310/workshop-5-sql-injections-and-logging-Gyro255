@@ -56,9 +56,16 @@ public class App {
             String line;
             int i = 1;
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
-                wordleDatabaseConnection.addValidWord(i, line);
-                i++;
+                
+                if (checkInput(line)) {
+                    System.out.println("Valid 4-letter word: " + line);
+                    wordleDatabaseConnection.addValidWord(i, line);
+                    i++;
+                }
+                else {
+                    System.out.println("Invalid word: " + line);
+                }
+                
             }
 
         } catch (IOException e) {
